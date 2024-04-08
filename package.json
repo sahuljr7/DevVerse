@@ -29,6 +29,7 @@
     "react-tippy": "^1.4.0"
   },
   "devDependencies": {
+    "@next/eslint-plugin-next": "^14.1.4",
     "@trivago/prettier-plugin-sort-imports": "^3.2.0",
     "@types/node": "17.0.23",
     "@types/react": "18.0.1",
