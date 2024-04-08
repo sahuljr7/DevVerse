@@ -1,0 +1,39 @@
+---
+featured: true
+title: 'Find shortest safe route in a matrix'
+summary: 'Given a matrix mat[][] with r rows and c columns, where some cells are landmines (marked as 0) and others are safe to traverse. Your task is to find the shortest safe route from any cell in the leftmost column to any cell in the rightmost column of the mat. You cannot move diagonally, and you must avoid both the landmines and their adjacent cells (up, down, left, right), as they are also unsafe.'
+published: '03/27/2024'
+last_modified: '03/27/2024'
+author_name: 'Sahul Kumar Parida'
+author_image: '/static/avatar.jpg'
+tags: ['DFS', 'Graph']
+keywords: ['Find shortest safe route in a matrix', 'Problem Of The Day', 'Geeks For Geeks']
+---
+
+## Problem Statement
+
+Given a **matrix mat[][] with r** rows and **c** columns, where some cells are landmines (marked as 0) and others are safe to traverse. Your task is to _**find the shortest safe route**_ from any cell in the leftmost column to any cell in the rightmost column of the mat. _You cannot move diagonally_, and you must avoid both the landmines and their adjacent cells (up, down, left, right), as they are also unsafe.
+
+
+```ts
+import { fetch } from 'fetch-h2'
+
+// Determine whether the sentiment of text is positive
+// Use a web service
+async function isPositive(text: string): Promise<boolean> {
+  const response = await fetch(`http://text-processing.com/api/sentiment/`, {
+    method: 'POST',
+    body: `text=${text}`,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  })
+  const json = await response.json()
+  return json.label === 'pos'
+}
+```
+
+
+
+
+

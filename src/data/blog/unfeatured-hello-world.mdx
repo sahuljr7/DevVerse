@@ -1,0 +1,35 @@
+---
+featured: false
+title: 'Code Guide'
+summary: 'Guide for Coding Problems'
+published: '01/04/2022'
+last_modified: '01/04/2022'
+author_name: 'Sahul Kumar Parida'
+author_image: '/static/avatar.jpg'
+tags: ['Code', 'Guide']
+keywords: ['Guide', 'Code Guide']
+---
+
+### Inline Code
+
+Inline Code is a great way to add code to your documentation.
+
+`this is inline code` and it's often used to show a single line of code, and here's another inline code:
+`nyanpasu~`
+
+
+```py
+import datetime
+
+def parse_expenses(expenses_string):
+    expenses = []
+    for line in expenses_string.splitlines():
+        if line.startswith("#"):
+            continue
+        date, value, currency = line.split(" ")
+        expenses.append((datetime.datetime.strptime(date, "%Y-%m-%d"),
+                         float(value),
+                         currency))
+    return expenses
+```
+
