@@ -6,34 +6,182 @@ published: '03/27/2024'
 last_modified: '03/27/2024'
 author_name: 'Sahul Kumar Parida'
 author_image: '/static/avatar.jpg'
-tags: ['DFS', 'Graph']
+tags: ['DFS', 'Graph', 'GeeksforGeeks']
 keywords: ['Find shortest safe route in a matrix', 'Problem Of The Day', 'Geeks For Geeks']
 ---
 
 ## Problem Statement
 
+[GFG Question Link](https://www.geeksforgeeks.org/problems/find-shortest-safe-route-in-a-matrix/1)
+
 Given a **matrix mat[][] with r** rows and **c** columns, where some cells are landmines (marked as 0) and others are safe to traverse. Your task is to _**find the shortest safe route**_ from any cell in the leftmost column to any cell in the rightmost column of the mat. _You cannot move diagonally_, and you must avoid both the landmines and their adjacent cells (up, down, left, right), as they are also unsafe.
 
+## Solution
 
-```ts
-import { fetch } from 'fetch-h2'
-
-// Determine whether the sentiment of text is positive
-// Use a web service
-async function isPositive(text: string): Promise<boolean> {
-  const response = await fetch(`http://text-processing.com/api/sentiment/`, {
-    method: 'POST',
-    body: `text=${text}`,
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
+```java
+class Checker{  // Define a class named Checker
+    int x;       // Declare an integer variable x
+    int y;       // Declare an integer variable y
+    int count;   // Declare an integer variable count
+    Checker(int x,int y,int count){  // Constructor for the Checker class with parameters x, y, and count
+        this.x = x;   // Assign the parameter x to the instance variable x
+        this.y = y;   // Assign the parameter y to the instance variable y
+        this.count = count;  // Assign the parameter count to the instance variable count
     }
-  })
-  const json = await response.json()
-  return json.label === 'pos'
+}
+
+class Solution {  // Define a class named Solution
+    static int min;  // Declare a static integer variable min
+    Solution(){      // Constructor for the Solution class
+        this.min = Integer.MAX_VALUE;  // Initialize the static variable min with the maximum integer value
+    }
+    public static int findShortestPath(int[][] mat) {  // Method to find the shortest path with input parameter mat, a 2D integer array
+    	int dx[] = {0,0,-1,1};  // Declare an array of integers dx representing changes in x direction for four directions
+        int dy[] = {-1,1,0,0};  // Declare an array of integers dy representing changes in y direction for four directions
+        for(int i=0;i<mat.length;i++){  // Loop through the rows of the matrix
+            if(mat[i][0]!=0 &&check(mat,i,0,dx,dy) ){  // Check if the first element of the row is not 0 and if it satisfies certain conditions
+                findAns(mat,i,0,dx,dy);  // Invoke the findAns method with specific parameters
+            }
+        }
+        return (min==Integer.MAX_VALUE)?-1:min;  // Return the minimum value if it's not the default maximum value, otherwise return -1
+    }
+    public static void findAns(int mat[][],int i,int j,int dx[],int dy[]){  // Method to find the answer with specific parameters
+        boolean visited[][] = new boolean[mat.length][mat[0].length];  // Declare a boolean matrix to track visited nodes
+        Queue<Checker> q = new LinkedList<>();  // Declare a queue of Checkers
+        q.add(new Checker(i,j,1));  // Add a new Checker to the queue with specific parameters
+        visited[i][j] = true;  // Mark the current position as visited
+        
+        while(!q.isEmpty()){  // Loop until the queue is empty
+            Checker val = q.poll();  // Remove and retrieve the first element from the queue
+            if(val.y==mat[0].length-1){  // Check if the y-coordinate of the current Checker is at the last column
+                min = Math.min(min,val.count);  // Update the minimum value
+            }else{
+                for(int k=0;k<4;k++){  // Loop through four directions
+                    if(find(mat,val,k,dx,dy,visited)) {  // Check if certain conditions are met
+                    	q.add(new Checker(val.x+dx[k],val.y+dy[k],val.count+1));  // Add a new Checker to the queue with updated parameters
+                    	visited[val.x+dx[k]][val.y+dy[k]] = true;  // Mark the new position as visited
+                    }
+                }
+            }
+
+        }
+        
+    }
+    private static boolean find(int[][] mat, Checker val, int i, int[] dx, int[] dy,boolean visited[][]) {  // Method to find specific elements with certain conditions
+		if(val.x+dx[i]<0 || val.y+dy[i]<0 || val.x+dx[i]>=mat.length || val.y+dy[i]>=mat[0].length || 
+					visited[val.x+dx[i]][val.y+dy[i]]==true || mat[val.x+dx[i]][val.y+dy[i]]==0 ) {  // Check if certain conditions are met
+			return false;  // Return false if the conditions are met
+		}
+		int ix = val.x+dx[i];  // Update the x-coordinate
+		int jy = val.y+dy[i];  // Update the y-coordinate
+		
+        for(int k=0;k<4;k++){  // Loop through four directions
+            if( (jy+dy[k])<0  || (jy+dy[k])>=mat[0].length || (ix+dx[k])<0 || (ix+dx[k])>=mat.length ){
+                //left right up down
+                continue;  // Skip the iteration if certain conditions are met
+            }else if(mat[ix+dx[k]][jy+dy[k]]==0){  // Check if certain conditions are met
+                return false;  // Return false if the conditions are met
+            }
+        }
+		return true;  // Return true if none of the above conditions are met
+	}
+
+	public static boolean check(int mat[][],int i,int j,int dx[],int dy[]){  // Method to check certain conditions
+        for(int k=0;k<4;k++){  // Loop through four directions
+            if( (j+dy[k])<0  || (j+dy[k])>=mat[0].length || (i+dx[k])<0 || (i+dx[k])>=mat.length ){
+                //left right up down
+                continue;  // Skip the iteration if certain conditions are met
+            }else if(mat[i+dx[k]][j+dy[k]]==0){  // Check if certain conditions are met
+                return false;  // Return false if the conditions are met
+            }
+        }
+        return true;  // Return true if none of the above conditions are met
+    }
 }
 ```
 
+### Algorithm Steps:
+1. Initialize the minimum path length as the maximum integer value.
+2. Iterate through each row of the matrix.
+3. For each element in the first column of the matrix:
+   - If the element is not 0 and meets certain conditions:
+     - Invoke a method to find the shortest path.
+4. The method to find the shortest path:
+   - Initialize a queue to perform BFS and a boolean matrix to track visited nodes.
+   - Start from the given cell.
+   - Iterate until the queue is empty:
+     - Check if the current cell is at the last column.
+     - If not, explore adjacent cells in all four directions.
+   - Update the minimum path length if needed.
+5. Return the minimum path length found, or -1 if no path is found.
 
+### Time Complexity:
+Let n be the number of rows and m be the number of columns in the matrix.
+- The main loop iterates over all rows, so it takes O(n).
+- Inside the loop, the BFS algorithm may visit each cell at most once, taking O(n×m).
+- Overall, the time complexity is O(n×m).
 
+### Space Complexity:
+- Additional space is used for the queue and the boolean matrix, each taking O(n×m) space.
+- The space complexity is O(n×m).
 
+### Reducing Complexity:
+The complexity can be reduced by using a more efficient algorithm such as Dijkstra's algorithm or A* algorithm for finding the shortest path. These algorithms provide better time complexity compared to a simple BFS approach. Let's implement Dijkstra's algorithm for this problem:
 
+```java
+import java.util.*;
+
+public class Solution {
+    public static int findShortestPath(int[][] mat) {
+        int m = mat.length;
+        int n = mat[0].length;
+        PriorityQueue<Node> pq = new PriorityQueue<>(Comparator.comparingInt(node -> node.dist));
+        pq.offer(new Node(0, 0, 0));
+        boolean[][] visited = new boolean[m][n];
+        
+        while (!pq.isEmpty()) {
+            Node node = pq.poll();
+            int x = node.x;
+            int y = node.y;
+            int dist = node.dist;
+            
+            if (x == m - 1 && y == n - 1)
+                return dist;
+            
+            if (visited[x][y])
+                continue;
+            visited[x][y] = true;
+            
+            for (int[] dir : dirs) {
+                int nx = x + dir[0];
+                int ny = y + dir[1];
+                
+                if (nx < 0 || nx >= m || ny < 0 || ny >= n || visited[nx][ny] || mat[nx][ny] == 0)
+                    continue;
+                
+                pq.offer(new Node(nx, ny, dist + 1));
+            }
+        }
+        
+        return -1;
+    }
+    
+    static class Node {
+        int x, y, dist;
+        
+        Node(int x, int y, int dist) {
+            this.x = x;
+            this.y = y;
+            this.dist = dist;
+        }
+    }
+    
+    static final int[][] dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+}
+```
+
+### Time Complexity:
+The time complexity of Dijkstra's algorithm is O((n+m)log(n+m)) where n is the number of rows and m is the number of columns in the matrix.
+
+### Space Complexity:
+The space complexity of the improved algorithm is O(n×m) for the priority queue and O(n×m) for the visited array, leading to a total space complexity of O(n×m).

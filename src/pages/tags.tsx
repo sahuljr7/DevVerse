@@ -18,6 +18,7 @@ const Tags: NextPage<TagsProps> = ({ tags = [], blogs = [] }) => {
     const tagColor: Record<string, string> = {
       graph: 'bg-primary-5 text-white',
       dfs: 'bg-red-500 text-white',
+      array: 'bg-pink-500 text-white'
     }
     const defaultColor = 'text-neutral-700 dark:text-neutral-200 bg-neutral-100 dark:bg-neutral-800'
 

@@ -1,0 +1,60 @@
+---
+featured: false
+title: 'Time Needed to Buy Tickets'
+summary: 'There are n people in a line queuing to buy tickets, where the 0th person is at the front of the line and the (n - 1)th person is at the back of the line. You are given a 0-indexed integer array tickets of length n where the number of tickets that the ith person would like to buy is tickets[i]. Each person takes exactly 1 second to buy a ticket. A person can only buy 1 ticket at a time and has to go back to the end of the line (which happens instantaneously) in order to buy more tickets. If a person does not have any tickets left to buy, the person will leave the line. Return the time taken for the person at position k (0-indexed) to finish buying tickets.'
+published:  '04/09/2024'
+last_modified:  '04/09/2024'
+author_name: 'Sahul Kumar Parida'
+author_image: '/static/avatar.jpg'
+tags: ['Array', 'Queue', 'LeetCode']
+keywords: ['Time Needed to Buy Tickets', 'LeetCode']
+---
+
+## Problem Statement
+[LeetCode Question Link](https://leetcode.com/problems/time-needed-to-buy-tickets/description/)
+
+There are n people in a line queuing to buy tickets, where the 0th person is at the front of the line and the (n - 1)th person is at the back of the line.
+
+You are given a 0-indexed integer array tickets of length n where the number of tickets that the ith person would like to buy is tickets[i].
+
+Each person takes exactly 1 second to buy a ticket. A person can only buy 1 ticket at a time and has to go back to the end of the line (which happens instantaneously) in order to buy more tickets. If a person does not have any tickets left to buy, the person will leave the line.
+
+Return the time taken for the person at position k (0-indexed) to finish buying tickets.
+
+## Solution
+
+```cpp
+class Solution {  // Define a class named Solution
+ public:  // Public access specifier
+  int timeRequiredToBuy(vector<int>& tickets, int k) {  // Define a method named timeRequiredToBuy which takes a reference to a vector of integers and an integer as parameters
+    int ans = 0;  // Initialize a variable ans to store the result
+
+    for (int i = 0; i < tickets.size(); ++i)  // Iterate through the tickets vector
+      if (i <= k)  // Check if the index is less than or equal to k
+        ans += min(tickets[i], tickets[k]);  // Increment ans by the minimum of tickets[i] and tickets[k]
+      else
+        ans += min(tickets[i], tickets[k] - 1);  // Increment ans by the minimum of tickets[i] and tickets[k] - 1
+
+    return ans;  // Return the final result
+  }
+};
+```
+
+### Algorithm Steps:
+1. Initialize a variable `ans` to store the result.
+2. Iterate through each ticket in the `tickets` vector.
+3. For each ticket:
+   - If the index is less than or equal to `k`, add the minimum of the current ticket and the `k`-th ticket to `ans`.
+   - If the index is greater than `k`, add the minimum of the current ticket and `k`-th ticket minus 1 to `ans`.
+4. Return the final value of `ans`.
+
+### Time Complexity:
+Let n be the number of elements in the `tickets` vector.
+- The algorithm iterates through each element once, resulting in a time complexity of O(n).
+
+### Space Complexity:
+The algorithm uses a constant amount of extra space, regardless of the size of the input vector. Hence, the space complexity is O(1).
+
+### Reducing Complexity:
+The complexity can't be further reduced since the algorithm already runs in linear time O(n) and uses constant space O(1).
+
