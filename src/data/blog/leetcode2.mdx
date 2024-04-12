@@ -1,0 +1,95 @@
+---
+featured: true
+title: 'Trapping Rain Water'
+summary: 'Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it can trap after raining.'
+published:  '04/12/2024'
+last_modified:  '04/12/2024'
+author_name: 'Sahul Kumar Parida'
+author_image: '/static/avatar.jpg'
+tags: ['Array', 'Two Pointers', 'Dynamic Programming', 'Stack', 'Monotonic Stack', 'LeetCode']
+keywords: ['Trapping Rain Water', 'LeetCode']
+---
+
+## Problem Statement
+[LeetCode Question Link](https://leetcode.com/problems/trapping-rain-water/description/)
+
+Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it can trap after raining.
+
+## Solution
+
+```cpp
+class Solution {
+ public:
+  int trap(vector<int>& height) {  // Define a function to calculate trapped rainwater given a vector of heights.
+    const int n = height.size();  // Store the size of the input vector.
+    int ans = 0;  // Initialize a variable to store the total trapped rainwater.
+    vector<int> l(n);  // Declare a vector to store the maximum height from the left side for each position.
+    vector<int> r(n);  // Declare a vector to store the maximum height from the right side for each position.
+
+    for (int i = 0; i < n; ++i)  // Loop through the input vector.
+      l[i] = i == 0 ? height[i] : max(height[i], l[i - 1]);  // Fill the left array with the maximum height encountered so far from the left.
+
+    for (int i = n - 1; i >= 0; --i)  // Loop through the input vector in reverse.
+      r[i] = i == n - 1 ? height[i] : max(height[i], r[i + 1]);  // Fill the right array with the maximum height encountered so far from the right.
+
+    for (int i = 0; i < n; ++i)  // Loop through the input vector.
+      ans += min(l[i], r[i]) - height[i];  // Calculate the trapped water at each position and accumulate it to the total.
+
+    return ans;  // Return the total trapped rainwater.
+  }
+};
+```
+
+### Algorithm Steps:
+1. Initialize variables: `ans` for storing total trapped water.
+2. Iterate over the heights from left to right, filling the `l` array with the maximum height encountered so far from the left.
+3. Iterate over the heights from right to left, filling the `r` array with the maximum height encountered so far from the right.
+4. Iterate over each height, calculate the trapped water at each position using the minimum of maximum heights from both sides and subtracting the current height.
+5. Accumulate the trapped water for each position to the `ans` variable.
+6. Return the total trapped water (`ans`).
+
+### Time Complexity:
+- The code runs through the input vector three times linearly (`O(n)`).
+- So, the time complexity is `O(n)`.
+
+### Space Complexity:
+- Additional space is used for storing two arrays (`l` and `r`), each of size `n`.
+- So, the space complexity is `O(n)`.
+
+### Reducing Complexity:
+- The space complexity can be reduced to `O(1)` by using two pointers to keep track of the maximum heights from left and right instead of using arrays. 
+
+Here's the optimized code:
+
+```cpp
+class Solution {
+public:
+    int trap(vector<int>& height) { // Function to calculate trapped rainwater given a vector of heights.
+        int n = height.size(); // Store the size of the input vector.
+        int left = 0, right = n - 1; // Initialize two pointers, left and right, at the beginning and end of the vector respectively.
+        int leftMax = 0, rightMax = 0; // Initialize variables to store the maximum height encountered from the left and right sides respectively.
+        int ans = 0; // Initialize a variable to store the total trapped rainwater.
+
+        while (left < right) { // Loop until the left pointer crosses the right pointer.
+            if (height[left] < height[right]) { // If the height at the left pointer is less than the height at the right pointer.
+                if (height[left] >= leftMax) // If the height at the left pointer is greater than or equal to the left maximum encountered so far.
+                    leftMax = height[left]; // Update the left maximum.
+                else // If the height at the left pointer is less than the left maximum encountered so far.
+                    ans += leftMax - height[left]; // Calculate and add the trapped water at the current position to the total.
+                left++; // Move the left pointer to the next position.
+            } else { // If the height at the left pointer is greater than or equal to the height at the right pointer.
+                if (height[right] >= rightMax) // If the height at the right pointer is greater than or equal to the right maximum encountered so far.
+                    rightMax = height[right]; // Update the right maximum.
+                else // If the height at the right pointer is less than the right maximum encountered so far.
+                    ans += rightMax - height[right]; // Calculate and add the trapped water at the current position to the total.
+                right--; // Move the right pointer to the previous position.
+            }
+        }
+        return ans; // Return the total trapped rainwater.
+    }
+};
+```
+
+### Optimized Time and Space Complexity:
+- Time Complexity: `O(n)` as the algorithm still traverses the heights once.
+- Space Complexity: `O(1)` as it uses only constant space for variables.
